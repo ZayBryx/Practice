@@ -13,6 +13,7 @@ const customErrorMiddleware = require("./middleware/error-handler");
 const notFoundMiddleware = require("./middleware/not-found");
 
 const postRouter = require("./routes/postRoute");
+const accountRouter = require("./routes/accountRoute");
 
 app.use(cors());
 app.use(express.json());
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
   res.send("<h1>TEST</h1>");
 });
 
+app.use("/api/account", accountRouter);
 app.use("/api/post", postRouter);
 
 app.use(customErrorMiddleware);
