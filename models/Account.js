@@ -1,12 +1,13 @@
-import mongoose, { model } from "mongoose";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const AccountSchema = new mongoose.Schema({
   username: {
     type: String,
     required: [true, "Username is required"],
     unique: [true, "Username is already taken"],
+    minLength: [3, "Username must be minimum 3 characters"],
   },
   email: {
     type: String,
