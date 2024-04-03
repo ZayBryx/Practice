@@ -7,3 +7,5 @@ class UnathenticatedError extends CustomError {
     this.statusCode = StatusCodes.UNAUTHORIZED;
   }
 }
+
+module.exports = UnathenticatedError;
