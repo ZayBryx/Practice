@@ -8,6 +8,10 @@ const EXPIRES = 1 * 60 * 60 * 1000; // 8 hours
 const login = async (req, res) => {
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    throw new NotFoundError("Username and Password is required");
+  }
+
   const account = await Account.findOne({
     $or: [{ username: username }, { email: username }],
   });
