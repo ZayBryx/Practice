@@ -3,7 +3,7 @@ const Account = require("../models/Account");
 const { registerValidator } = require("../validators");
 const { BadRequestError, NotFoundError } = require("../Errors");
 
-const EXPIRES = 1 * 60 * 60 * 1000; // 8 hours
+const millisecondsIn7Days = 7 * 24 * 60 * 60 * 1000;
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -30,17 +30,12 @@ const login = async (req, res) => {
 
   res
     .status(StatusCodes.OK)
-    .cookie("token", refreshToken, {
+    .cookie("refresh_token", refreshToken, {
       httpOnly: true,
       secure: process.env.SECURE,
-      maxAge: EXPIRES,
+      maxAge: millisecondsIn7Days,
     })
-    .cookie("Bearer ", `Bearer ${accessToken}`, {
-      httpOnly: true,
-      secure: process.env.SECURE,
-      maxAge: 15 * 60 * 1000, // 15mins
-    })
-    .json({ username: account.username, accessToken: accessToken });
+    .json({ username: account.username, token: accessToken });
 };
 
 const register = async (req, res) => {
