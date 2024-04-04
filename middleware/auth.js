@@ -18,8 +18,16 @@ const auth = async (req, res, next) => {
       username: payload.username,
       role: payload.role,
     };
+
+    // if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+    //   throw new UnauthenticatedError("Token is expired");
+    // }
+
     next();
   } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      throw new UnathenticatedError("Token is expired");
+    }
     throw new UnathenticatedError("Authentication Invalid");
   }
 };
