@@ -51,7 +51,7 @@ AccountSchema.methods.generateAccessToken = function () {
 
 AccountSchema.methods.generateRefreshToken = function () {
   return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
+    expiresIn: "7d",
   });
 };
 
