@@ -43,7 +43,7 @@ AccountSchema.pre("save", async function () {
 
 AccountSchema.methods.generateAccessToken = function () {
   return jwt.sign(
-    { userId: this._id, role: this.role },
+    { userId: this._id, username: this.username, role: this.role },
     process.env.JWT_SECRET,
     { expiresIn: "1h" }
   );
