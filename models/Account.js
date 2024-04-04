@@ -45,13 +45,13 @@ AccountSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     { userId: this._id, role: this.role },
     process.env.JWT_SECRET,
-    { expiresIn: "15m" }
+    { expiresIn: "1h" }
   );
 };
 
 AccountSchema.methods.generateRefreshToken = function () {
   return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
+    expiresIn: "30d",
   });
 };
 
