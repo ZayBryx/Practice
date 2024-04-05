@@ -16,8 +16,8 @@ const notFoundMiddleware = require("./middleware/not-found");
 const authMiddleware = require("./middleware/auth");
 
 const postRouter = require("./routes/postRoute");
-const accountRouter = require("./routes/accountRoute");
-const userRouter = require("./routes/userRoute");
+const authRoute = require("./routes/authRoute");
+const accountRoute = require("./routes/accountRoute");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,8 +28,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/post", postRouter);
-app.use("/api/account", accountRouter);
-app.use("/api/user", authMiddleware, userRouter);
+app.use("/api/auth", authRoute);
+app.use("/api/account", authMiddleware, accountRoute);
 
 app.use(customErrorMiddleware);
 app.use(notFoundMiddleware);

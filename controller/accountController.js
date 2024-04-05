@@ -1,57 +1,30 @@
 const { StatusCodes } = require("http-status-codes");
-const Account = require("../models/Account");
-const { registerValidator } = require("../validators");
-const { BadRequestError, NotFoundError } = require("../Errors");
+const BlackListToken = require("../models/BlackListToken");
+const { BadRequestError } = require("../Errors");
 
-const millisecondsIn7Days = 7 * 24 * 60 * 60 * 1000;
+const home = async (req, res) => {
+  const { username } = req.user;
 
-const login = async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    throw new NotFoundError("Username and Password is required");
+  if (!username) {
+    throw new BadRequestError("username does not exist");
   }
 
-  const account = await Account.findOne({
-    $or: [{ username: username }, { email: username }],
-  });
-
-  if (!account) {
-    throw new NotFoundError("User not found");
-  }
-
-  const isMatch = await account.isPasswordCorrect(password);
-
-  if (!isMatch) {
-    throw new BadRequestError("password is incorrect");
-  }
-  const accessToken = account.generateAccessToken();
-  const refreshToken = account.generateRefreshToken();
-
-  res
-    .status(StatusCodes.OK)
-    .cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: process.env.SECURE,
-      maxAge: millisecondsIn7Days,
-    })
-    .json({ username: account.username, token: accessToken });
+  res.status(StatusCodes.OK).json({ username: username });
 };
 
-const register = async (req, res) => {
-  const { value, error } = registerValidator.validate(req.body, {
-    abortEarly: false,
-  });
+const logout = async (req, res) => {
+  const authorization = req.headers.authorization;
 
-  if (error) {
-    throw new BadRequestError(error.message);
+  if (!authorization || !authorization.startsWith("Bearer ")) {
+    throw new BadRequestError("Invalid Token");
   }
 
-  const { username, email, password, repeat_password } = value;
+  const token = authorization.split(" ")[1];
 
-  const account = await Account.create({ username, email, password });
+  await BlackListToken.create({ token, token_type: "access" });
+  delete req.user;
 
-  res.status(StatusCodes.CREATED).json(account);
+  res.status(StatusCodes.OK).json({ messsage: "Token revoked successfully" });
 };
 
-module.exports = { login, register };
+module.exports = { home, logout };
