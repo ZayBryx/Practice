@@ -36,7 +36,7 @@ const login = async (req, res) => {
       sameSite: "strict",
       secure: process.env.SECURE,
       maxAge: millisecondsIn7Days,
-      path: "/secret",
+      path: "/api/auth/refresh",
     })
     .json({ username: account.username, token: accessToken });
 };
@@ -69,8 +69,8 @@ const refresh = async (req, res) => {
   if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
     throw new UnauthenticatedError("Token is expired");
   }
-  const { userId } = payload;
 
+  const { userId } = payload;
   if (!userId) {
     throw new BadRequestError("Invalid Token");
   }
