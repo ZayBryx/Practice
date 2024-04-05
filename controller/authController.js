@@ -32,8 +32,10 @@ const login = async (req, res) => {
     .status(StatusCodes.OK)
     .cookie("refresh_token", refreshToken, {
       httpOnly: true,
+      sameSite: "strict",
       secure: process.env.SECURE,
       maxAge: millisecondsIn7Days,
+      path: "/secret",
     })
     .json({ username: account.username, token: accessToken });
 };
@@ -55,6 +57,8 @@ const register = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
+  const { refresh_token } = req.cookie;
+  console.log(refresh_token);
   res.send("refresh route");
 };
 
