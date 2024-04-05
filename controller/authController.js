@@ -2,6 +2,7 @@ const { StatusCodes } = require("http-status-codes");
 const Account = require("../models/Account");
 const { registerValidator } = require("../validators");
 const { BadRequestError, NotFoundError } = require("../Errors");
+const jwt = require("jsonwebtoken");
 
 const millisecondsIn7Days = 7 * 24 * 60 * 60 * 1000;
 
@@ -57,9 +58,27 @@ const register = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
-  const { refresh_token } = req.cookie;
-  console.log(refresh_token);
-  res.send("refresh route");
+  const { refresh_token } = req.cookies;
+
+  if (!refresh_token) {
+    throw new BadRequestError("Invalid Token");
+  }
+
+  const payload = jwt.verify(refresh_token, process.env.JWT_SECRET);
+
+  if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+    throw new UnauthenticatedError("Token is expired");
+  }
+  const { userId } = payload;
+
+  if (!userId) {
+    throw new BadRequestError("Invalid Token");
+  }
+
+  const account = await Account.findOne({ _id: userId });
+  const accessToken = account.generateAccessToken();
+
+  res.status(StatusCodes.OK).json({ accessToken });
 };
 
 module.exports = { login, register, refresh };
