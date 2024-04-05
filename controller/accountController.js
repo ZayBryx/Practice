@@ -24,6 +24,7 @@ const logout = async (req, res) => {
   await BlackListToken.create({ token, token_type: "access" });
   delete req.user;
 
+  res.clearCookie("refresh_token", { path: "/api/auth/refresh" });
   res.status(StatusCodes.OK).json({ messsage: "Token revoked successfully" });
 };
 
