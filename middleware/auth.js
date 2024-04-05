@@ -1,14 +1,20 @@
 const jwt = require("jsonwebtoken");
-const { UnathenticatedError } = require("../Errors");
+const { UnathenticatedError, BadRequestError } = require("../Errors");
+const BlackListToken = require("../models/BlackListToken");
 
 const auth = async (req, res, next) => {
   const accessToken = req.headers["authorization"];
 
-  if (!accessToken || !accessToken.startsWith("Bearer")) {
+  if (!accessToken || !accessToken.startsWith("Bearer ")) {
     throw new UnathenticatedError("Authentication Invalid");
   }
 
   const token = accessToken.split(" ")[1];
+
+  const isBlackList = await BlackListToken.findOne({ token });
+  if (isBlackList) {
+    throw new BadRequestError("Invalid Token");
+  }
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
