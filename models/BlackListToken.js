@@ -6,6 +6,10 @@ const BlackListToken = new mongoose.Schema({
     unique: true,
     required: true,
   },
+  token_type: {
+    type: String,
+    enum: ["access", "refresh"],
+  },
 });
 
 module.exports = mongoose.model("BlackListToken", BlackListToken);
