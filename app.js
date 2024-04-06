@@ -19,7 +19,13 @@ const postRouter = require("./routes/postRoute");
 const authRoute = require("./routes/authRoute");
 const accountRoute = require("./routes/accountRoute");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
