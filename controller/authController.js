@@ -33,8 +33,6 @@ const login = async (req, res) => {
     .status(StatusCodes.OK)
     .cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.SECURE,
       maxAge: millisecondsIn7Days,
     })
     .json({ username: account.username, token: accessToken });
