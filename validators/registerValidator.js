@@ -22,7 +22,7 @@ const registerSchema = Joi.object({
         "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one digit, and one special character",
       "any.required": "Password is required",
     }),
-  repeat_password: Joi.valid(Joi.ref("password")).required().messages({
+  confirmPassword: Joi.valid(Joi.ref("password")).required().messages({
     "any.only": "Repeat password must match the password",
     "any.required": "Repeat password is required",
   }),
