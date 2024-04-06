@@ -21,7 +21,7 @@ const accountRoute = require("./routes/accountRoute");
 
 app.use(
   cors({
-    origin: "*",
+    origin: true,
     credentials: true,
   })
 );
