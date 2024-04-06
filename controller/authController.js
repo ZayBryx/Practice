@@ -78,7 +78,7 @@ const refresh = async (req, res) => {
   const account = await Account.findOne({ _id: userId });
   const accessToken = account.generateAccessToken();
 
-  res.status(StatusCodes.OK).json({ accessToken });
+  res.status(StatusCodes.OK).json({ token: accessToken });
 };
 
 module.exports = { login, register, refresh };
