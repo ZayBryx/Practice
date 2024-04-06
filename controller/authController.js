@@ -36,7 +36,6 @@ const login = async (req, res) => {
       sameSite: "strict",
       secure: process.env.SECURE,
       maxAge: millisecondsIn7Days,
-      path: "/api/auth/refresh",
     })
     .json({ username: account.username, token: accessToken });
 };
