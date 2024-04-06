@@ -50,7 +50,7 @@ const register = async (req, res) => {
     throw new BadRequestError(error.message);
   }
 
-  const { username, email, password, repeat_password } = value;
+  const { username, email, password, confirmPassword } = value;
 
   const account = await Account.create({ username, email, password });
 
