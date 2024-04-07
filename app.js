@@ -3,7 +3,6 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const app = express();
@@ -26,8 +25,8 @@ app.use(
   })
 );
 
-app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("<h1>TEST</h1>");
