@@ -33,7 +33,7 @@ const login = async (req, res) => {
     .status(StatusCodes.OK)
     .cookie("refresh_token", refreshToken, {
       httpOnly: true,
-      maxAge: millisecondsIn7Days,
+      maxAge: new Date(Date.now() + millisecondsIn7Days),
     })
     .json({ username: account.username, token: accessToken });
 };
