@@ -33,6 +33,7 @@ const login = async (req, res) => {
     .status(StatusCodes.OK)
     .cookie("refresh_token", refreshToken, {
       httpOnly: true,
+      sameSite: "None",
       maxAge: new Date(Date.now() + millisecondsIn7Days),
     })
     .json({ username: account.username, token: accessToken });
@@ -55,8 +56,7 @@ const register = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
-  const refresh_token = req.cookies["refresh_token"];
-  console.log(req.cookies);
+  const refresh_token = req.cookie["refresh_token"];
 
   if (!refresh_token) {
     throw new BadRequestError("Invalid Token");
