@@ -56,6 +56,7 @@ const register = async (req, res) => {
 
 const refresh = async (req, res) => {
   const { refresh_token } = req.cookies;
+  console.log(req.cookies);
 
   if (!refresh_token) {
     throw new BadRequestError("Invalid Token");
