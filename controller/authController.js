@@ -55,7 +55,7 @@ const register = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
-  const { refresh_token } = req.cookies;
+  const refresh_token = req.cookies["refresh_token"];
   console.log(req.cookies);
 
   if (!refresh_token) {
