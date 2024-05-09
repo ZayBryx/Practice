@@ -10,7 +10,7 @@ const getAllPost = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const { title, body } = value;
+  const { title, body } = req.body;
 
   const post = await Post.create({ title, body });
   res.status(StatusCodes.CREATED).json(post);
@@ -34,7 +34,7 @@ const getOnePost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   const { id } = req.params;
-  const { title, body } = value;
+  const { title, body } = req.body;
 
   if (!mongoose.isValidObjectId(id)) {
     throw new BadRequestError(`Invalid ID`);
