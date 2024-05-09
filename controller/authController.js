@@ -31,9 +31,9 @@ const login = async (req, res) => {
 
   res
     .status(StatusCodes.OK)
-    .cookie("refresh_token", refreshToken, {
+    .cookie("token", refreshToken, {
       httpOnly: true,
-      sameSite: "None",
+      sameSite: "none",
       maxAge: new Date(Date.now() + millisecondsIn7Days),
     })
     .json({ username: account.username, token: accessToken });
@@ -56,13 +56,13 @@ const register = async (req, res) => {
 };
 
 const refresh = async (req, res) => {
-  const refresh_token = req.cookies["refresh_token"];
+  const token = req.cookies["token"];
 
-  if (!refresh_token) {
+  if (!token) {
     throw new BadRequestError("Invalid Token");
   }
 
-  const payload = jwt.verify(refresh_token, process.env.JWT_SECRET);
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
 
   if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
     throw new UnauthenticatedError("Token is expired");
