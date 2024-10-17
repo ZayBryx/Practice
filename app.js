@@ -31,7 +31,6 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  console.log(req.cookies);
   res.send("<h1>TEST</h1>");
 });
 
