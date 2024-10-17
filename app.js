@@ -5,6 +5,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const morgan = require("morgan");
 const app = express();
 
 const port = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(morgan("combined"));
 
 app.use(cookieParser());
 app.use(express.json());
